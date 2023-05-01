@@ -1,0 +1,20 @@
+
+path+=~/.local/bin
+[[ -d /opt/homebrew ]] && path+=/opt/homebrew/bin
+
+# set EDITOR and VISUAL if not set
+if [[ -z $EDITOR ]]; then
+    if [[ $TERM_PROGRAM = 'vscode' && $(command -v code) ]]; then
+        export EDITOR='code --wait'
+        export VISUAL="$EDITOR"
+    elif [[ $(command -v vim) ]]; then
+        export EDITOR=vim
+        export VISUAL="$EDITOR"
+    fi
+fi
+
+# python environment
+export VIRTUAL_ENV_HOME="$HOME/.virtualenvs"
+
+[[ -f ~/.zshenv_local ]] && source ~/.zshenv_local
+

@@ -1,0 +1,22 @@
+
+{{- if not (lookPath "vim") }}
+.vimrc
+.vim/
+{{- end }}
+
+{{- if not (lookPath "zsh") }}
+.zshenv
+.zshrc
+.config/zsh/
+.local/share/zsh/
+{{- end }}
+
+{{ if not (lookPath "pip3") }}
+.ipython/
+{{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+.Brewfile
+.hushlogin
+{{- end }}
+

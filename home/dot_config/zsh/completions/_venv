@@ -1,0 +1,9 @@
+#compdef venv
+
+_venv() {
+    local -a env_names
+    env_names=( $VIRTUAL_ENV_HOME/*(/:t) )
+    _arguments '1:name:($env_names)'
+    return 0
+}
+_venv

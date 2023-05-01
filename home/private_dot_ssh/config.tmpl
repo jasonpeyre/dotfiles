@@ -1,0 +1,7 @@
+Include config_local
+
+{{ if eq .chezmoi.os "darwin" -}}
+Host *
+    UseKeychain yes
+    AddKeysToAgent yes
+{{ end -}}

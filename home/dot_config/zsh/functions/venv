@@ -1,0 +1,40 @@
+
+function venv {
+    # check that venv home variable is set and make sure the dir exists
+    if [[ ! -v VIRTUAL_ENV_HOME ]]; then
+        echo "Must set environment variable 'VIRTUAL_ENV_HOME'"
+        return 1
+    fi
+    if [[ ! -d "$VIRTUAL_ENV_HOME" ]]; then
+        mkdir -p "$VIRTUAL_ENV_HOME"
+    fi
+    # deactivate any active venv first
+    if [[ -v VIRTUAL_ENV && "$(command -v deactivate)" ]]; then
+        deactivate
+    fi
+
+    local venv_name venv_dir
+    if [ "$*" ]; then
+        venv_name="$*"
+    else
+        venv_name='default'
+    fi
+    if [[ $venv_name = '.' ]]; then
+        venv_name=${PWD:t}
+    fi
+    venv_dir="$VIRTUAL_ENV_HOME/$venv_name"
+    if [[ ! -d "$venv_dir" ]]; then
+        echo "The venv '$venv_name' does not exist..."
+        pyversion="$(python3 -V)"
+        pypath="$(command -v python3)"
+        if $(read -q "?Create venv using $pyversion ($pypath) (y/n) " && print '\n'); then
+            print "\nCreating venv..."
+            python3 -m venv --upgrade-deps "$venv_dir"
+        else
+            return 0
+        fi
+    fi
+
+    source "$venv_dir/bin/activate"
+    return 0
+}

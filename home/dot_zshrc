@@ -1,0 +1,103 @@
+
+# fpath setup
+[[ -d /opt/homebrew ]] && fpath+=/opt/homebrew/share/zsh/site-functions
+fpath+=~/.local/share/zsh/completions
+
+# functions
+fpath+=(
+    ~/.config/zsh/functions
+    ~/.config/zsh/completions
+)
+autoload -U ~/.config/zsh/functions/*(.:t)
+
+# emacs keybindings (use C-x C-v for vim normal mode)
+bindkey -e
+# edit command in editor
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+# consider / a word boundary
+export WORDCHARS=${WORDCHARS/\/}
+
+setopt auto_cd
+setopt interactive_comments
+
+# command history
+HISTFILE=~/.zsh_history
+SAVEHIST=100000; HISTSIZE=10000
+setopt share_history
+setopt extended_history
+setopt hist_ignore_space
+
+# load completion system
+autoload -U compinit && compinit
+autoload -U bashcompinit && bashcompinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' use-cache on
+setopt complete_in_word 
+
+# starship prompt
+if (( $+commands[starship] )); then
+    eval "$(starship init zsh)"
+fi
+
+# direnv
+if (( $+commands[direnv] )); then
+    eval "$(direnv hook zsh)"
+fi
+
+# plugin names at ZPLUGINDIR
+plugins=(
+    zsh-abbr
+    fzf-tab
+    # keep the next three in this order
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    zsh-history-substring-search
+)
+
+# load plugins
+ZPLUGINDIR=~/.local/share/zsh/plugins
+for plugin_name in $plugins; do
+    local plugin_dir=$ZPLUGINDIR/$plugin_name
+    local init_file=$plugin_dir/$plugin_name.plugin.zsh
+    if [[ ! -e $init_file ]]; then
+        echo >&2 "No init file found for '$plugin'." && continue
+    fi
+    fpath+=$plugin_dir
+    source $init_file
+done
+
+# use history substring search with up/down and C-p/C-n
+if (( $+functions[history-substring-search-up] )); then
+    bindkey '^P' history-substring-search-up; bindkey '^[[A' history-substring-search-up
+    bindkey '^N' history-substring-search-down; bindkey '^[[B' history-substring-search-down
+fi
+
+# fzf
+if (( $+commands[fzf] )); then
+    export FZF_DEFAULT_OPTS='--layout=reverse'
+    source $ZPLUGINDIR/fzf/shell/key-bindings.zsh
+    if (( $+functions[fzf-tab-complete] )); then
+        # zsh completion with tab, fzf completion with shift-tab
+        bindkey "^I" expand-or-complete
+        bindkey "^[[Z" fzf-tab-complete
+    fi
+fi
+
+# setup colors
+export CLICOLOR=1 # macos/bsd
+if (( $+commands[dircolors] )); then
+    eval "$(dircolors -b)"
+elif (( $+commands[gdircolors] )); then
+    eval "$(gdircolors -b)"
+fi
+if [[ -v LS_COLORS ]]; then 
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+fi
+
+# local config
+if [[ -f ~/.zshrc_local ]]; then
+    source ~/.zshrc_local
+fi

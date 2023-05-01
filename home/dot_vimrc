@@ -1,0 +1,108 @@
+
+" # General Settings
+
+set hidden
+set confirm
+
+set splitbelow
+set splitright
+
+set ignorecase
+set smartcase
+
+set incsearch
+set hlsearch
+
+set mouse=a
+set completeopt=menuone,noselect
+set wildmenu
+set wildmode=list:longest,full
+set updatetime=100
+
+set clipboard^=unnamed,unnamedplus
+
+let &directory = expand('~/.vim/swap//')
+set backup
+let &backupdir = expand('~/.vim/backup//')
+set undofile
+let &undodir = expand('~/.vim/undo//')
+if !isdirectory(&undodir) | call mkdir(&undodir, "p") | endif
+if !isdirectory(&backupdir) | call mkdir(&backupdir, "p") | endif
+if !isdirectory(&directory) | call mkdir(&directory, "p") | endif
+
+" change cursor shape depending on mode
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" General Mappings
+
+let mapleader = ' '
+
+" buffer movement
+nnoremap <M-[> :bprevious<cr>
+nnoremap <M-]> :bnext<cr>
+
+" window movement
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+tnoremap <C-j> <C-w><C-j>
+tnoremap <C-k> <C-w><C-k>
+tnoremap <C-l> <C-w><C-l>
+tnoremap <C-h> <C-w><C-h>
+
+" Y yanks to end of line like D
+nnoremap <silent> Y y$
+
+" esc removes highlights in normal mode
+nnoremap <silent> <esc> :nohlsearch<cr>
+
+" # Editing
+
+filetype plugin indent on
+syntax enable
+
+set number
+set relativenumber
+set ruler
+set laststatus=2
+
+set wrap
+set breakindent
+
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+set autoindent
+set smartindent
+set smarttab
+
+" add git info to statusline
+if &runtimepath =~ 'Fugitive'
+    set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
+endif
+
+" # Fzf
+if &runtimepath =~ 'FZF'
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+    noremap <leader><leader> :Buffers<cr>
+    noremap <leader>f :Files<cr>
+    noremap <leader>l :BLines<cr>
+    noremap <leader>L :Lines<cr>
+    noremap <leader>m :Marks<cr>
+    noremap <leader>g :GFiles?<cr>
+    noremap <leader>c :BCommits<cr>
+    noremap <leader>C :Commits<cr>
+    noremap <leader>/ :Rg<cr>
+    noremap <leader>? :Commands<cr>
+    noremap <leader>,c :Colors<cr>
+    noremap <leader>,f :Filetypes<cr>
+    " Insert mode completion
+    imap <c-x><c-k> <plug>(fzf-complete-word)
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
+endif
+

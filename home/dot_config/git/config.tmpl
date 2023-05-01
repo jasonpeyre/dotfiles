@@ -1,0 +1,25 @@
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+[core]
+    excludesfile = ~/.config/git/ignore
+[pull]
+    ff = only
+[merge]
+    ff = false
+[push]
+    default = simple
+[init]
+    defaultBranch = main
+[rebase]
+	autosquash = true
+    autostash = true
+
+{{- if lookPath "gh" }}
+[credential "https://github.com"]
+	helper = !/usr/bin/env gh auth git-credential
+{{- else }}
+[url "git@github.com:{{ .ghUsername }}/"]
+    insteadOf = https://github.com/{{ .ghUsername }}/
+{{- end }}
+
