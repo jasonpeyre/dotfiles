@@ -1,0 +1,7 @@
+
+mkcd () {
+    [ -z $1 ] && echo "Usage: $0 directory_name" && return 0
+
+    mkdir -p $1
+    cd $1
+}

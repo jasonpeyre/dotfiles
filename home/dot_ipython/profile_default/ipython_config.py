@@ -8,4 +8,3 @@ c.InteractiveShell.enable_history_search = True
 c.InteractiveShell.extra_open_editor_shortcuts = True
 
 c.InteractiveShellApp.extensions = ["autoreload"]
-

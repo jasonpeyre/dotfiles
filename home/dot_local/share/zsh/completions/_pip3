@@ -1,0 +1,2 @@
+#compdef pip3
+compadd $(pip3 completion --zsh "$words[1]") && _ret=0

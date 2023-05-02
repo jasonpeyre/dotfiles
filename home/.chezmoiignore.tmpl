@@ -9,14 +9,19 @@
 .zshrc
 .config/zsh/
 .local/share/zsh/
+install_starship.sh
+setup_completions.zsh
 {{- end }}
 
 {{ if not (lookPath "pip3") }}
 .ipython/
 {{- end }}
 
+{{ if eq .chezmoi.os "darwin" }}
+install_starship.sh
+{{- end }}
+
 {{- if ne .chezmoi.os "darwin" }}
 .Brewfile
 .hushlogin
 {{- end }}
-

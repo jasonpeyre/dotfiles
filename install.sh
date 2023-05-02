@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
+export PATH="$PATH:$HOME/.local/bin"
 
 if [ ! "$(command -v chezmoi)" ]; then
     sh -c "$(curl -fsSL https://git.io/chezmoi)" -- -b "$HOME/.local/bin"
@@ -10,5 +10,5 @@ else
     chezmoi=chezmoi
 fi
 
+dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
 exec "$chezmoi" init --apply "--source=$dir"
-
