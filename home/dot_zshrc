@@ -38,8 +38,9 @@ if [[ -z $EDITOR ]]; then
 fi
 
 bindkey -e
+bindkey '^[' vi-cmd-mode
 autoload -U edit-command-line && zle -N edit-command-line
-bindkey "^X^E" edit-command-line
+bindkey '^X^E' edit-command-line
 # consider / a word boundary
 export WORDCHARS=${WORDCHARS/\/}
 
