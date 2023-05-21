@@ -21,11 +21,6 @@ autoload -U $ZFUNCDIR/*(.:t)
 # environment
 export VIRTUAL_ENV_HOME="$HOME/.virtualenvs"
 
-# local config
-if [ -f ~/.zshrc_local ]; then
-    source ~/.zshrc_local
-fi
-
 # set EDITOR and VISUAL if not set
 if [[ -z $EDITOR ]]; then
     if [[ $TERM_PROGRAM = 'vscode' && $(command -v code) ]]; then
@@ -119,3 +114,8 @@ autoload -U bashcompinit && bashcompinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' use-cache on
 setopt complete_in_word 
+
+# local config
+if [ -f ~/.zshrc_local ]; then
+    source ~/.zshrc_local
+fi
