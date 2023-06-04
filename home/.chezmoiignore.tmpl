@@ -17,6 +17,10 @@ setup_completions.zsh
 .ipython/
 {{- end }}
 
+{{- if not (lookPath "docker") }}
+.docker/
+{{- end }}
+
 {{ if eq .chezmoi.os "darwin" }}
 install_starship.sh
 {{- end }}
