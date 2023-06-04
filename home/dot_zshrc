@@ -33,7 +33,8 @@ if [[ -z $EDITOR ]]; then
 fi
 
 bindkey -e
-bindkey '^[' vi-cmd-mode
+# completion menu forwards and backwards with tab/shift-tab
+bindkey '^[[Z' reverse-menu-complete
 autoload -U edit-command-line && zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 # consider / a word boundary
@@ -90,10 +91,11 @@ fi
 if (( $+commands[fzf] )); then
     export FZF_DEFAULT_OPTS='--layout=reverse'
     source $ZPLUGINDIR/fzf/shell/key-bindings.zsh
+    source $ZPLUGINDIR/fzf/shell/completion.zsh
     if (( $+functions[fzf-tab-complete] )); then
-        # zsh completion with tab, fzf completion with shift-tab
+        # zsh completion with ^I (Tab), fzf completion with ^X^I (^X Tab)
         bindkey '^I' expand-or-complete
-        bindkey '^[[Z' fzf-tab-complete
+        bindkey '^X^I' fzf-tab-complete
     fi
 fi
 
@@ -119,3 +121,4 @@ setopt complete_in_word
 if [ -f ~/.zshrc_local ]; then
     source ~/.zshrc_local
 fi
+
