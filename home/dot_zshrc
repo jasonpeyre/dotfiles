@@ -9,6 +9,13 @@ if [[ -d /opt/homebrew ]]; then
     fpath=( /opt/homebrew/share/zsh/site-functions $fpath )
 fi
 
+# source scripts in .profile.d
+if [[ -d ~/.profile.d ]]; then
+    for script in ~/.profile.d/*.{sh,zsh}(N:o); do
+        source $script
+    done
+fi
+
 # add user completions to fpath
 fpath+=( ~/.config/zsh/completions ~/.local/share/zsh/completions )
 
