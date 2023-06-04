@@ -39,6 +39,9 @@ if [[ -z $EDITOR ]]; then
     fi
 fi
 
+alias e='eval $EDITOR'
+alias ...='../..'
+
 bindkey -e
 # completion menu forwards and backwards with tab/shift-tab
 bindkey '^[[Z' reverse-menu-complete
